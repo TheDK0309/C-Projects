@@ -1,0 +1,68 @@
+#include <bits/stdc++.h> 
+using namespace std; 
+  
+class Queue  
+{  
+    public: 
+    int front, rear, size;  
+    unsigned capacity;  
+    int* array;  
+};  
+  
+ 
+Queue* createQueue(unsigned capacity)  //creat queue with given capacity, default size of queue is 0
+{  
+    Queue* queue = new Queue(); 
+    queue->capacity = capacity;  
+    queue->front = queue->size = 0;  
+    queue->rear = capacity - 1; // This is important, see the enqueue  
+    queue->array = new int[(queue->capacity * sizeof(int))];  
+    return queue;  
+}  
+  
+int isFull(Queue* queue)  
+{ 
+    return (queue->size == queue->capacity); //queue max if size == capacity
+}  
+  
+
+int isEmpty(Queue* queue)  
+{ 
+    return (queue->size == 0); //queue empty if size is 0
+}  
+  
+void enqueue(Queue* queue, int item)  
+{  
+    if (isFull(queue))  
+        return;  
+    queue->rear = (queue->rear + 1) % queue->capacity;  // It changes rear and size  
+    queue->array[queue->rear] = item;  
+    queue->size = queue->size + 1;  
+    cout << item << " enqueued to queue\n";  
+}  
+  
+int dequeue(Queue* queue)  
+{  
+    if (isEmpty(queue))  
+        return INT_MIN;  
+    int item = queue->array[queue->front];  // It changes front and size
+    queue->front = (queue->front + 1) % queue->capacity;  
+    queue->size = queue->size - 1;  
+    return item;  
+}  
+  
+// Function to get front of queue  
+int front(Queue* queue)  
+{  
+    if (isEmpty(queue))  
+        return INT_MIN;  
+    return queue->array[queue->front];  
+}  
+  
+// Function to get rear of queue  
+int rear(Queue* queue)  
+{  
+    if (isEmpty(queue))  
+        return INT_MIN;  
+    return queue->array[queue->rear];  
+}  
